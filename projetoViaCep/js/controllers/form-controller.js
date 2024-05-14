@@ -32,4 +32,21 @@ export function init() {
 
   state.errorCep = document.querySelector('[data-error="cep"]');
   state.errorNumber = document.querySelector('[data-error="number"]');
+
+  // funções dos eventos
+  state.inputNumber.addEventListener("change", handleInputNumberChange);
+}
+
+// função trata  erros dos campos cep e numero
+function setFormError(key, value) {
+  const element = document.querySelector(`[data-error="${key}"]`);
+  element.innerHTML = value;
+}
+
+function handleInputNumberChange(event) {
+  if (event.target.value == "") {
+    setFormError("number", "Campo requerido");
+  } else {
+    setFormError("number", "");
+  }
 }
