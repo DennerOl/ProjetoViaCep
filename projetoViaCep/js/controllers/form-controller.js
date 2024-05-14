@@ -35,6 +35,7 @@ export function init() {
 
   // funções dos eventos
   state.inputNumber.addEventListener("change", handleInputNumberChange);
+  state.btnClear.addEventListener("click", handleBtnClearClick);
 }
 
 // função trata  erros dos campos cep e numero
@@ -49,4 +50,21 @@ function handleInputNumberChange(event) {
   } else {
     setFormError("number", "");
   }
+}
+
+function clearForm() {
+  state.inputCep.value = "";
+  state.inputCity.value = "";
+  state.inputNumber.value = "";
+  state.inputStreet.value = "";
+
+  setFormError("cep", "");
+  setFormError("number", "");
+
+  state.inputCep.focus();
+}
+
+function handleBtnClearClick(event) {
+  event.preventDefault();
+  clearForm();
 }
