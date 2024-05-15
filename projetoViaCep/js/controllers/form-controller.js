@@ -1,5 +1,6 @@
 import Address from "../models/address.js";
 import * as addressService from "../services/address-service.js";
+import * as listController from "./list-controller.js";
 
 // responsavel por tratar eventos do usuario controla o form.
 
@@ -65,6 +66,8 @@ function clearForm() {
   setFormError("cep", "");
   setFormError("number", "");
 
+  state.address = new Address();
+
   state.inputCep.focus();
 }
 
@@ -73,11 +76,12 @@ function handleBtnClearClick(event) {
   clearForm();
 }
 
+// btn save salva e cria o card
 function handleBtnSaveClick(event) {
   event.preventDefault();
 
   const errors = addressService.getErrors(state.address);
-
+  // percorro o array com nome dos campos com erro
   const keys = Object.keys(errors);
 
   if (keys.length > 0) {
