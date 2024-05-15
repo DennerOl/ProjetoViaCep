@@ -1,4 +1,5 @@
 import Address from "../models/address.js";
+import * as addressService from "../services/address-service.js";
 
 // responsavel por tratar eventos do usuario controla o form.
 
@@ -36,6 +37,8 @@ export function init() {
   // funções dos eventos
   state.inputNumber.addEventListener("change", handleInputNumberChange);
   state.btnClear.addEventListener("click", handleBtnClearClick);
+  state.btnSave.addEventListener("click", handleBtnSaveClick);
+  state.inputCep.addEventListener("change", handleInputCepChange);
 }
 
 // função trata  erros dos campos cep e numero
@@ -67,4 +70,40 @@ function clearForm() {
 function handleBtnClearClick(event) {
   event.preventDefault();
   clearForm();
+}
+
+function handleBtnSaveClick(event) {
+  event.preventDefault();
+
+  const errors = addressService.getErrors(state.address);
+
+  const keys = Object.keys(errors);
+
+  if (keys.length > 0) {
+    keys.forEach((key) => {
+      setFormError(key, errors[key]);
+    });
+  } else {
+    listController.addCard(state.address);
+    clearForm();
+  }
+}
+
+async function handleInputCepChange(event) {
+  const cep = event.target.value;
+
+  try {
+    const address = await addressService.findByCep(cep);
+
+    state.inputStreet.value = address.street;
+    state.inputCity.value = address.city;
+    state.address = address;
+
+    setFormError("cep", "");
+    state.inputNumber.focus();
+  } catch (e) {
+    state.inputStreet.value = "";
+    state.inputCity.value = "";
+    setFormError("cep", "Informe um CEP válido");
+  }
 }
