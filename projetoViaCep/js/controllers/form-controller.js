@@ -39,6 +39,7 @@ export function init() {
   state.btnClear.addEventListener("click", handleBtnClearClick);
   state.btnSave.addEventListener("click", handleBtnSaveClick);
   state.inputCep.addEventListener("change", handleInputCepChange);
+  state.inputNumber.addEventListener("keyup", handleInputNumberKeyup);
 }
 
 // função trata  erros dos campos cep e numero
@@ -106,4 +107,8 @@ async function handleInputCepChange(event) {
     state.inputCity.value = "";
     setFormError("cep", "Informe um CEP válido");
   }
+}
+// func responsavel por pegar o numero do endereço que user digitou
+function handleInputNumberKeyup(event) {
+  state.address.number = event.target.value;
 }
